@@ -24,6 +24,11 @@
       "password": "{{ fanvil_password }}",
       "rpc_url": "{{ fanvil_rpc_url }}",
       "disable": {{ fanvil_disable }}
+    },
+    "poly": {
+      "user":"{{ fanvil_user }}",
+      "password": "{{ fanvil_password }}",
+      "rpc_url": "{{ fanvil_rpc_url }}",
+      "disable": {{ fanvil_disable }}
     }
-  }
 }

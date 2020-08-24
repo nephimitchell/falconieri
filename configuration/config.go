@@ -47,6 +47,7 @@ type Configuration struct {
 		Gigaset GigasetConf  `json:"gigaset"`
 		Fanvil  ProviderConf `json:"fanvil"`
 		Yealink ProviderConf `json:"yealink"`
+		Poly    ProviderConf `json:"poly"`
 	} `json: "providers"`
 }
 
@@ -183,5 +184,33 @@ func Init(ConfigFilePtr *string) {
 			Config.Providers.Yealink.RpcUrl == "") {
 
 		Config.Providers.Yealink.Disable = true
+	}
+
+	if os.Getenv("POLY_USER") != "" {
+		Config.Providers.Poly.User = os.Getenv("POLY_USER")
+	}
+
+	if os.Getenv("POLY_PASSWORD") != "" {
+		Config.Providers.Poly.Password = os.Getenv("POLY_PASSWORD")
+	}
+
+	if os.Getenv("POLY_ZTP_URL") != "" {
+		Config.Providers.Poly.RpcUrl = os.Getenv("POLY_ZTP_URL")
+	}
+
+	if os.Getenv("POLY_DISABLE") != "" {
+
+		disable, err := strconv.ParseBool(os.Getenv("POLY_DISABLE"))
+		if err == nil {
+			Config.Providers.Poly.Disable = disable
+		}
+	}
+
+	if !Config.Providers.Poly.Disable &&
+		(Config.Providers.Poly.User == "" &&
+			Config.Providers.Poly.Password == "" &&
+			Config.Providers.Poly.ZtpUrl == "") {
+
+		Config.Providers.Poly.Disable = true
 	}
 }

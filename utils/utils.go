@@ -60,7 +60,8 @@ func ParseProviderError(message string) error {
 	case message == "Error:malformed_url", //snom
 		message == "Error: url_format_error",                                                            //fanvil
 		strings.HasPrefix(message, "url_invalid:"),                                                      //gigaset
-		message == "Error:The url can only begin with 'http://' or 'https://' or 'ftp://' or 'tftp://'": //yealink
+		message == "Error:The url can only begin with 'http://' or 'https://' or 'ftp://' or 'tftp://'", //yealink
+		message == "ErrorMessage=\"objects of this type must match the  following regular expression: [a-fA-F0-9]{12}\"": //poly
 
 		return errors.New("malformed_url")
 
@@ -72,10 +73,14 @@ func ParseProviderError(message string) error {
 
 	case message == "Error:owned_by_other_user", //snom
 		message == "Error: device_had_existed",                         //fanvil
+		message == "ErrorMessage=\"Subscriber/device does not exist\"", //poly
 		strings.HasPrefix(message, "mac_already_in_use:"),              //gigaset
 		regexp.MustCompile(`^Error:[a-z0-9]{10}`).MatchString(message): //yealink
 
 		return errors.New("device_owned_by_other_user")
+
+	case message == "ErrorMessage=\"Subscriber/device does not exist\"" //
+
 
 	default:
 		return models.ProviderError{
